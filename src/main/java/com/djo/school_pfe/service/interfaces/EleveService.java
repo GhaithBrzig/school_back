@@ -13,5 +13,5 @@ public interface EleveService {
     Eleve updateEleve(Long id, Eleve eleve);
     void deleteEleve(Long id);
 
-    String add(Eleve eleve, String roleName);
+    String add(Eleve eleve);
 }

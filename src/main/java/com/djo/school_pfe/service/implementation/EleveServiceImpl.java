@@ -30,15 +30,13 @@ public class EleveServiceImpl implements EleveService {
     @Autowired
     RoleRepository roleRepository;
     @Override
-    public String add(Eleve eleve, String roleName) {
+    public String add(Eleve eleve) {
 
 
             if (this.eleveRepository.existsByUserNameOrEmailAddress(eleve.getUserName(), eleve.getEmailAddress())) {
                 throw new BadRequestException("Username or email-address already used");
             }
 
-            Role role = this.roleRepository.findByRoleName(roleName);
-            eleve.setRoles(Collections.singletonList(role));
             eleve.setPassword(passwordEncoder.encode(eleve.getPassword()));
 
             this.eleveRepository.save(eleve);

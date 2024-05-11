@@ -19,8 +19,8 @@ public class EleveController {
     }
 
     @PostMapping
-    public String createEleve(@RequestParam(value = "roleName") String roleName,@RequestBody Eleve eleve) {
-        return eleveService.add(eleve, roleName);
+    public String createEleve(@RequestBody Eleve eleve) {
+        return eleveService.add(eleve);
     }
 
     @GetMapping("/{id}")
