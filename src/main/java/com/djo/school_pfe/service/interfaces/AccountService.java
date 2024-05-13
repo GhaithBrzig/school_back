@@ -20,7 +20,7 @@ public interface AccountService {
     String disableAccount(Long userId);
 
     UserEntity getProfile(String userName);
-
+    String addPassedEvaluation(Long userId, Long evaluationId);
     String updateProfile(String userName, UpdateProfileDto updateProfileDto);
 
     String changePassword(String userName, ChangePasswordDto changePasswordDto);

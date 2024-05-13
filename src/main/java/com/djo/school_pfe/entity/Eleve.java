@@ -24,4 +24,7 @@ public class Eleve extends UserEntity{
     @OneToMany(mappedBy = "eleve")
     private List<EvaluationResult> evaluationResults;
     // Getters and setters
+    @ManyToMany
+    private List<Evaluation> passedEvaluations;
+
 }

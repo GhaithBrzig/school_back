@@ -4,9 +4,13 @@ import com.djo.school_pfe.dto.ChangePasswordDto;
 import com.djo.school_pfe.dto.ResetPasswordDto;
 import com.djo.school_pfe.dto.UpdateProfileDto;
 import com.djo.school_pfe.entity.ConfirmationKey;
+import com.djo.school_pfe.entity.Eleve;
+import com.djo.school_pfe.entity.Evaluation;
 import com.djo.school_pfe.entity.UserEntity;
 import com.djo.school_pfe.error.BadRequestException;
 import com.djo.school_pfe.error.NotFoundException;
+import com.djo.school_pfe.repository.EleveRepository;
+import com.djo.school_pfe.repository.EvaluationRepository;
 import com.djo.school_pfe.repository.KeyRepository;
 import com.djo.school_pfe.repository.UserRepository;
 import com.djo.school_pfe.service.interfaces.AccountService;
@@ -23,6 +27,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    EvaluationRepository evaluationRepository;
+    @Autowired
+    EleveRepository eleveRepository;
     @Autowired
     KeyRepository keyRepository;
     @Autowired
@@ -83,6 +91,21 @@ public class AccountServiceImpl implements AccountService {
         this.userRepository.save(userEntity);
         return "Profile updated";
     }
+
+    @Override
+    public String addPassedEvaluation(Long userId, Long evaluationId) {
+        Eleve eleve = this.eleveRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        Evaluation evaluation = this.evaluationRepository.findById(evaluationId)
+                .orElseThrow(() -> new NotFoundException("Evaluation not found"));
+
+        eleve.getPassedEvaluations().add(evaluation);
+        this.userRepository.save(eleve);
+
+        return "Evaluation added to passed evaluations successfully";
+    }
+
 
     @Override
     public String changePassword(String userName, ChangePasswordDto changePasswordDto) {
