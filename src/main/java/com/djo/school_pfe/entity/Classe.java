@@ -1,4 +1,5 @@
 package com.djo.school_pfe.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +29,4 @@ public class Classe {
     @ManyToMany(mappedBy = "classes")
     private List<Enseignant> enseignants;
 
-    // Getters and setters
 }

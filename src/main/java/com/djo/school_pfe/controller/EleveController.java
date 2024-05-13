@@ -18,9 +18,10 @@ public class EleveController {
         this.eleveService = eleveService;
     }
 
-    @PostMapping
-    public String createEleve(@RequestBody Eleve eleve) {
-        return eleveService.add(eleve);
+    @PostMapping("/{classeId}")
+    public ResponseEntity<String> createEleve(@PathVariable Long classeId, @RequestBody Eleve eleve) {
+        String message = eleveService.add(eleve, classeId);
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/{id}")
