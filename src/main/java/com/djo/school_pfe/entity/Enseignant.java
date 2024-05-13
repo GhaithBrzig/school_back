@@ -1,4 +1,5 @@
 package com.djo.school_pfe.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
@@ -19,7 +20,7 @@ public class Enseignant extends UserEntity{
 
     @ManyToMany
     private List<Classe> classes;
-
+@JsonIgnore
     @OneToMany(mappedBy = "enseignant")
     private List<Evaluation> evaluations;
 }

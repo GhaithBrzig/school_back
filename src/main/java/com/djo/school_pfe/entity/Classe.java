@@ -28,5 +28,12 @@ public class Classe {
     @ManyToMany(mappedBy = "classes")
     private List<Enseignant> enseignants;
 
+    @ManyToMany
+    @JoinTable(
+            name = "classe_evaluation",
+            joinColumns = @JoinColumn(name = "classe_id"),
+            inverseJoinColumns = @JoinColumn(name = "evaluation_id"))
+    private List<Evaluation> evaluations;
+
     // Getters and setters
 }

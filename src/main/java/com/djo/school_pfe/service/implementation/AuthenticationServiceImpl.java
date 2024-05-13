@@ -2,9 +2,7 @@ package com.djo.school_pfe.service.implementation;
 
 import com.djo.school_pfe.dto.AuthResponseDto;
 import com.djo.school_pfe.dto.LoginDto;
-import com.djo.school_pfe.entity.Role;
-import com.djo.school_pfe.entity.UserEntity;
-import com.djo.school_pfe.entity.Validation;
+import com.djo.school_pfe.entity.*;
 import com.djo.school_pfe.error.BadRequestException;
 import com.djo.school_pfe.repository.RoleRepository;
 import com.djo.school_pfe.repository.UserRepository;
@@ -13,6 +11,7 @@ import com.djo.school_pfe.service.interfaces.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,18 +54,43 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String register(UserEntity user, String roleName) {
-        if (!validation.usernameValidation(user.getUserName()) || !validation.passwordValidation(user.getPassword()) ||
-                !validation.emailValidation(user.getEmailAddress()))
-            throw new BadRequestException("Username, email-address or password invalid");
-        if (this.userRepository.existsByUserNameOrEmailAddress(user.getUserName(), user.getEmailAddress()))
-            throw new BadRequestException("Username or " +
-                    "email-address already used");
+        if (this.userRepository.existsByUserNameOrEmailAddress(user.getUserName(), user.getEmailAddress())) {
+            throw new BadRequestException("Username or email-address already used");
+        }
+
         Role role = this.roleRepository.findByRoleName(roleName);
         user.setRoles(Collections.singletonList(role));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        this.userRepository.save(user);
+
+        // Create an Enseignant if roleName is "enseignant"
+        if (roleName.equalsIgnoreCase("enseignant")) {
+            Enseignant enseignant = new Enseignant();
+            BeanUtils.copyProperties(user, enseignant); // Copy user properties to enseignant
+            // Set additional enseignant properties if needed
+            this.userRepository.save(enseignant);
+        } else if (roleName.equalsIgnoreCase("admin")) {
+            Admin admin = new Admin();
+            BeanUtils.copyProperties(user, admin); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(admin);
+        } else if (roleName.equalsIgnoreCase("eleve")) {
+            Eleve eleve = new Eleve();
+            BeanUtils.copyProperties(user, eleve); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(eleve);
+        } else if (roleName.equalsIgnoreCase("parent")) {
+            Parent parent = new Parent();
+            BeanUtils.copyProperties(user, parent); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(parent);
+        } else {
+            // Handle other roles if needed
+            throw new BadRequestException("Unsupported role");
+        }
+
         return "User saved successfully";
     }
+
 
     @Override
     public AuthResponseDto login(LoginDto loginDto) {
