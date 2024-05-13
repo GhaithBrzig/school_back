@@ -1,13 +1,12 @@
 package com.djo.school_pfe.entity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
-
 
 @Entity
 @Getter
@@ -19,9 +18,10 @@ public class EvaluationResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-@JsonIgnore
+
     @ManyToOne
     @JoinColumn(name = "eleve_id")
+    @JsonIgnoreProperties("evaluationResults")
     private Eleve eleve;
 
     @ManyToOne
