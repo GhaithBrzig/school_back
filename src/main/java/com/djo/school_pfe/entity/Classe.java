@@ -1,5 +1,6 @@
 package com.djo.school_pfe.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,15 +25,15 @@ public class Classe {
     private String nom;
     private int nbrEleves;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "classe")
     private List<Eleve> eleves;
 
-    @OneToMany(mappedBy = "classe", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "classe_enseignant",
+            joinColumns = @JoinColumn(name = "classe_id"),
+            inverseJoinColumns = @JoinColumn(name = "enseignant_id"))
     private List<Enseignant> enseignants = new ArrayList<>();
 
-
-   @ManyToOne
-   @JoinColumn(name = "classe_id", nullable = true)
-    private Classe classe;
-
+    // Getters and setters
 }

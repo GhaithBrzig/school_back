@@ -15,23 +15,13 @@ import java.util.List;
 @Table(name = "Eleves")
 public class Eleve extends UserEntity{
 
-
-
-
-    @Column(name = "classe_id", insertable = false, updatable = false)
-    private Long classeId;
-
-
-    @ManyToOne
-    @JsonIgnoreProperties("eleves")
     @JsonIgnore
+    @ManyToOne
     private Classe classe;
 
-    @JsonIgnore
     @ManyToMany
     private List<Parent> parents;
 
-    @JsonIgnore
     @ManyToMany
     private List<Evaluation> evaluations;
 

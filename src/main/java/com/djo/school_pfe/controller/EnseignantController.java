@@ -25,6 +25,10 @@ public class EnseignantController {
         this.classeService = classeService;
 
     }
+    @GetMapping("/{enseignantId}/classes")
+    public List<Classe> getClassesByEnseignantId(@PathVariable Long enseignantId) {
+        return enseignantService.getClassesByEnseignantId(enseignantId);
+    }
 
     @PostMapping
     public String createEnseignant(@RequestParam(value = "roleName") String roleName, @RequestParam(value = "classeId") Long classeId, @RequestParam(value = "matiere") String matiere, @RequestBody Enseignant enseignant) {

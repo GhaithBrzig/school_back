@@ -13,6 +13,6 @@ public interface EnseignantService {
     List<Enseignant> getAllEnseignants();
     Enseignant updateEnseignant(Long id, Enseignant enseignant);
     void deleteEnseignant(Long id);
-
+    List<Classe> getClassesByEnseignantId(Long enseignantId);
     String add(Enseignant enseignant, String roleName, Classe classe, Matiere matiere);
 }

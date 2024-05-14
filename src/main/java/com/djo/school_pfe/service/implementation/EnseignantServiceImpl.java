@@ -2,6 +2,7 @@ package com.djo.school_pfe.service.implementation;
 
 import com.djo.school_pfe.entity.*;
 import com.djo.school_pfe.error.BadRequestException;
+import com.djo.school_pfe.repository.ClasseRepository;
 import com.djo.school_pfe.repository.EnseignantRepository;
 import com.djo.school_pfe.repository.RoleRepository;
 import com.djo.school_pfe.repository.UserRepository;
@@ -31,22 +32,29 @@ public class EnseignantServiceImpl implements EnseignantService {
     RoleRepository roleRepository;
     @Autowired
     UserRepository userRepository;
-
+    @Autowired
+    ClasseRepository classeRepository;
     @Override
     public String add(Enseignant enseignant, String roleName, Classe classe, Matiere matiere) {
-
         if (this.enseignantRepository.existsByUserNameOrEmailAddress(enseignant.getUserName(), enseignant.getEmailAddress())) {
             throw new BadRequestException("Username or email-address already used");
         }
 
-
         Role role = roleRepository.findByRoleName(roleName);
         enseignant.setRoles(Collections.singletonList(role));
         enseignant.setMatiere(matiere);
-        enseignant.setClasse(classe);
         enseignant.setPassword(passwordEncoder.encode(enseignant.getPassword()));
+        classe.getEnseignants().add(enseignant);
         enseignantRepository.save(enseignant);
         return "Enseignant saved successfully";
+    }
+
+    public List<Classe> getClassesByEnseignantId(Long enseignantId) {
+        Enseignant enseignant = enseignantRepository.findById(enseignantId).orElse(null);
+        if (enseignant != null) {
+            return classeRepository.findByEnseignantsContains(enseignant);
+        }
+        return null;
     }
 
 
