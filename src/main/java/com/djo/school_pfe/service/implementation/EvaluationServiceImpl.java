@@ -98,4 +98,9 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<Evaluation> getEvaluationsByEnseignantId(Long enseignantId) {
         return evaluationRepository.findByEnseignant_UserId(enseignantId);
     }
+
+    @Override
+    public List<Evaluation> getEvaluationsByClassId(Long classeId) {
+        return evaluationRepository.findByClasseId(classeId);
+    }
 }
