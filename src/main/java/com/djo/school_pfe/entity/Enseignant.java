@@ -1,8 +1,11 @@
 package com.djo.school_pfe.entity;
-import lombok.*;
-
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,14 +15,19 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Enseignants")
 public class Enseignant extends UserEntity{
-    private String matiere;
 
-    @ManyToMany
-    private List<Eleve> eleves;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Matiere matiere;
 
-    @ManyToMany
-    private List<Classe> classes;
+    @ManyToOne
+    @JoinColumn(name = "classe_id")
+    private Classe classe;
+
 
     @OneToMany(mappedBy = "enseignant")
+    @JsonIgnore
     private List<Evaluation> evaluations;
+
+
 }

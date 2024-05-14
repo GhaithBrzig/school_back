@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,12 @@ public class Classe {
     @OneToMany(mappedBy = "classe")
     private List<Eleve> eleves;
 
-    @ManyToMany(mappedBy = "classes")
-    private List<Enseignant> enseignants;
+    @OneToMany(mappedBy = "classe", cascade = CascadeType.ALL)
+    private List<Enseignant> enseignants = new ArrayList<>();
+
+
+   @ManyToOne
+   @JoinColumn(name = "classe_id", nullable = true)
+    private Classe classe;
 
 }

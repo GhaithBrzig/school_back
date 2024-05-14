@@ -9,5 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface EleveRepository extends JpaRepository<Eleve, Long> {
+    Boolean existsByUserNameOrEmailAddress(String userName, String emailAddress);
 
+    Optional<Eleve> findByUserName(String userName);
+
+    Optional<Eleve> findByEmailAddress(String emailAddress);
 }

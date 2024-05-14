@@ -13,24 +13,25 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Eleves")
-public class Eleve{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long eleveId;
+public class Eleve extends UserEntity{
 
-    private String firstName;
-    private String lastName;
-    private String emailAddress;
-    private String phoneNumber;
+
+
+
+    @Column(name = "classe_id", insertable = false, updatable = false)
+    private Long classeId;
+
 
     @ManyToOne
     @JsonIgnoreProperties("eleves")
     @JsonIgnore
     private Classe classe;
 
+    @JsonIgnore
     @ManyToMany
     private List<Parent> parents;
 
+    @JsonIgnore
     @ManyToMany
     private List<Evaluation> evaluations;
 
