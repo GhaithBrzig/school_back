@@ -27,7 +27,7 @@ public class Enseignant extends UserEntity{
 
     @ManyToMany
     private List<Classe> classes;
-@JsonIgnore
+
     @OneToMany(mappedBy = "enseignant")
     @JsonIgnore
     private List<Evaluation> evaluations;

@@ -1,7 +1,7 @@
 package com.djo.school_pfe.entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,18 +22,10 @@ public class Evaluation {
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
     private List<Question> questions = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToOne
-    private Classe classe;
 
-
-    @JsonIgnore
     @ManyToOne
     private Enseignant enseignant;
 
     @ManyToMany(mappedBy = "evaluations")
-    private List<Classe> classes;
-
-    // Getters and setters
+    private List<Classe> classes = new ArrayList<>();
 }
-

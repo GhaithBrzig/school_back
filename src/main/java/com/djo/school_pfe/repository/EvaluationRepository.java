@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     List<Evaluation> findByEnseignant_UserId(Long enseignantId);
-    List<Evaluation> findByClasseId(Long classeId);
+    List<Evaluation> findByClasses_Id(Long classeId);
+
 }

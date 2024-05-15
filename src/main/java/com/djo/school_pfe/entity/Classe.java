@@ -1,4 +1,5 @@
 package com.djo.school_pfe.entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -36,5 +37,11 @@ public class Classe {
             inverseJoinColumns = @JoinColumn(name = "enseignant_id"))
     private List<Enseignant> enseignants = new ArrayList<>();
 
-    // Getters and setters
+    @ManyToMany
+    @JoinTable(
+            name = "classe_evaluation",
+            joinColumns = @JoinColumn(name = "classe_id"),
+            inverseJoinColumns = @JoinColumn(name = "evaluation_id")
+    )
+    private List<Evaluation> evaluations = new ArrayList<>();
 }

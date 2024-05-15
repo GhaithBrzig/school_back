@@ -101,6 +101,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     @Override
     public List<Evaluation> getEvaluationsByClassId(Long classeId) {
-        return evaluationRepository.findByClasseId(classeId);
+        return evaluationRepository.findByClasses_Id(classeId);
     }
 }
