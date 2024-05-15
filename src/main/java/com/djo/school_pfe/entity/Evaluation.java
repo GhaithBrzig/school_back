@@ -1,4 +1,5 @@
 package com.djo.school_pfe.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
@@ -18,9 +19,12 @@ public class Evaluation {
     private String question;
     private String reponse;
 
+    @JsonIgnore
     @ManyToOne
     private Classe classe;
 
+
+    @JsonIgnore
     @ManyToOne
     private Enseignant enseignant;
 

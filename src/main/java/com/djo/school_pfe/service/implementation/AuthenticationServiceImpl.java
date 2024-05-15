@@ -55,9 +55,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public String register(UserEntity user, String roleName) {
-        if (!validation.usernameValidation(user.getUserName()) || !validation.passwordValidation(user.getPassword()) ||
-                !validation.emailValidation(user.getEmailAddress()))
-            throw new BadRequestException("Username, email-address or password invalid");
         if (this.userRepository.existsByUserNameOrEmailAddress(user.getUserName(), user.getEmailAddress()))
             throw new BadRequestException("Username or " +
                     "email-address already used");

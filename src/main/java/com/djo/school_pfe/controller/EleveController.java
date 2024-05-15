@@ -1,6 +1,9 @@
 package com.djo.school_pfe.controller;
 
+import com.djo.school_pfe.entity.Classe;
 import com.djo.school_pfe.entity.Eleve;
+import com.djo.school_pfe.error.BadRequestException;
+import com.djo.school_pfe.service.interfaces.ClasseService;
 import com.djo.school_pfe.service.interfaces.EleveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -12,15 +15,21 @@ import java.util.List;
 @RequestMapping("/eleves")
 public class EleveController {
     private final EleveService eleveService;
+    private final ClasseService classeService;
 
     @Autowired
-    public EleveController(EleveService eleveService) {
+    public EleveController(EleveService eleveService, ClasseService classeService) {
         this.eleveService = eleveService;
+        this.classeService = classeService;
     }
 
     @PostMapping
-    public String createEleve(@RequestParam(value = "roleName") String roleName,@RequestBody Eleve eleve) {
-        return eleveService.add(eleve, roleName);
+    public String createEleve(@RequestParam(value = "roleName") String roleName, @RequestParam(value = "classeId") Long classeId, @RequestBody Eleve eleve) {
+        Classe classe = classeService.getClasseById(classeId);
+        if (classe == null) {
+            throw new BadRequestException("Classe not found");
+        }
+        return eleveService.add(eleve, roleName, classe);
     }
 
     @GetMapping("/{id}")

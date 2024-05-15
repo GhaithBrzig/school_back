@@ -1,6 +1,11 @@
 package com.djo.school_pfe.controller;
 
+import com.djo.school_pfe.entity.Classe;
+import com.djo.school_pfe.entity.Eleve;
 import com.djo.school_pfe.entity.Enseignant;
+import com.djo.school_pfe.entity.Matiere;
+import com.djo.school_pfe.error.BadRequestException;
+import com.djo.school_pfe.service.interfaces.ClasseService;
 import com.djo.school_pfe.service.interfaces.EnseignantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -12,15 +17,31 @@ import java.util.List;
 @RequestMapping("/enseignants")
 public class EnseignantController {
     private final EnseignantService enseignantService;
+    private final ClasseService classeService;
 
     @Autowired
-    public EnseignantController(EnseignantService enseignantService) {
+    public EnseignantController(EnseignantService enseignantService,ClasseService classeService) {
         this.enseignantService = enseignantService;
+        this.classeService = classeService;
+
+    }
+    @GetMapping("/{enseignantId}/classes")
+    public List<Classe> getClassesByEnseignantId(@PathVariable Long enseignantId) {
+        return enseignantService.getClassesByEnseignantId(enseignantId);
     }
 
     @PostMapping
-    public String createEnseignant(@RequestParam(value = "roleName") String roleName,@RequestBody Enseignant enseignant) {
-        return enseignantService.add(enseignant, roleName);
+    public String createEnseignant(@RequestParam(value = "roleName") String roleName, @RequestParam(value = "classeId") Long classeId, @RequestParam(value = "matiere") String matiere, @RequestBody Enseignant enseignant) {
+        Classe classe = classeService.getClasseById(classeId);
+        if (classe == null) {
+            throw new BadRequestException("Classe not found");
+        }
+
+        // Convert the matiere string to a Matiere enum value
+        Matiere matiereEnum = Matiere.valueOf(matiere.toUpperCase());
+
+        // Call the EnseignantService.add method with the matiere enum value
+        return enseignantService.add(enseignant, roleName, classe, matiereEnum);
     }
 
     @GetMapping("/{id}")

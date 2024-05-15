@@ -1,4 +1,6 @@
 package com.djo.school_pfe.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 
@@ -12,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Eleves")
 public class Eleve extends UserEntity{
+
+    @JsonIgnore
     @ManyToOne
     private Classe classe;
 
@@ -21,5 +25,4 @@ public class Eleve extends UserEntity{
     @ManyToMany
     private List<Evaluation> evaluations;
 
-    // Getters and setters
 }

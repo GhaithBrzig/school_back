@@ -25,10 +25,6 @@ public class ClasseServiceImpl implements ClasseService {
     }
     @Autowired
     Validation validation;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    RoleRepository roleRepository;
     @Override
     public String add(Classe classe) {
         this.classeRepository.save(classe);
@@ -39,7 +35,7 @@ public class ClasseServiceImpl implements ClasseService {
 
     @Override
     public Classe getClasseById(Long id) {
-        return classeRepository.findById(id).orElse(null);
+        return classeRepository.findClasseById(id);
     }
 
     @Override
@@ -51,8 +47,7 @@ public class ClasseServiceImpl implements ClasseService {
     public Classe updateClasse(Long id, Classe classe) {
         Optional<Classe> optionalClasse = classeRepository.findById(id);
         if (optionalClasse.isPresent()) {
-            // Update the classe's details
-            classe.setId(id); // Set the ID of the classe to be updated
+            classe.setId(id);
             return classeRepository.save(classe);
         } else {
             throw new IllegalArgumentException("Classe with id " + id + " does not exist!");

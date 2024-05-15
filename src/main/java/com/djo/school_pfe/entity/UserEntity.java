@@ -48,4 +48,9 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "userId"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "roleId"))
     private List<Role> roles = new ArrayList<>();
+
+    @Column(name = "classe_id", insertable = false, updatable = false)
+    private Long classeId;
+
+
 }
