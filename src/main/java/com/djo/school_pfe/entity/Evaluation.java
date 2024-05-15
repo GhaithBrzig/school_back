@@ -4,6 +4,8 @@ import lombok.*;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,8 +18,9 @@ public class Evaluation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
-    private String question;
-    private String reponse;
+
+    @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
+    private List<Question> questions = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne
@@ -28,5 +31,9 @@ public class Evaluation {
     @ManyToOne
     private Enseignant enseignant;
 
+    @ManyToMany(mappedBy = "evaluations")
+    private List<Classe> classes;
+
     // Getters and setters
 }
+

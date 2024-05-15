@@ -58,4 +58,12 @@ public class AccountController {
     public String updateProfile(Principal principal, @RequestBody UpdateProfileDto updateProfileDto) {
         return this.accountService.updateProfile(principal.getName(), updateProfileDto);
     }
+
+    // AccountController.java
+    @PostMapping("/add-passed-evaluation")
+    public String addPassedEvaluation(@RequestParam(value = "userId") Long userId,
+                                      @RequestParam(value = "evaluationId") Long evaluationId) {
+        return this.accountService.addPassedEvaluation(userId, evaluationId);
+    }
+
 }

@@ -10,13 +10,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Classes")
+@JsonIgnoreProperties({"eleves", "enseignants", "evaluations"})
 public class Classe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class Classe {
 
     @JsonIgnore
     @OneToMany(mappedBy = "classe")
+    @JsonIgnoreProperties("classe")
     private List<Eleve> eleves;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
