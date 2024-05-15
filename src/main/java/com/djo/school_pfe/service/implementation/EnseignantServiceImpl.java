@@ -1,12 +1,13 @@
 package com.djo.school_pfe.service.implementation;
 
-import com.djo.school_pfe.entity.Enseignant;
-import com.djo.school_pfe.entity.Role;
-import com.djo.school_pfe.entity.Validation;
+import com.djo.school_pfe.entity.*;
 import com.djo.school_pfe.error.BadRequestException;
+import com.djo.school_pfe.repository.ClasseRepository;
 import com.djo.school_pfe.repository.EnseignantRepository;
 import com.djo.school_pfe.repository.RoleRepository;
+import com.djo.school_pfe.repository.UserRepository;
 import com.djo.school_pfe.service.interfaces.EnseignantService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,22 +30,70 @@ public class EnseignantServiceImpl implements EnseignantService {
     PasswordEncoder passwordEncoder;
     @Autowired
     RoleRepository roleRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ClasseRepository classeRepository;
     @Override
-    public String add(Enseignant enseignant, String roleName) {
-
-
+    public String add(Enseignant enseignant, String roleName, Classe classe, Matiere matiere) {
         if (this.enseignantRepository.existsByUserNameOrEmailAddress(enseignant.getUserName(), enseignant.getEmailAddress())) {
             throw new BadRequestException("Username or email-address already used");
         }
 
-        Role role = this.roleRepository.findByRoleName(roleName);
+        Role role = roleRepository.findByRoleName(roleName);
         enseignant.setRoles(Collections.singletonList(role));
+        enseignant.setMatiere(matiere);
         enseignant.setPassword(passwordEncoder.encode(enseignant.getPassword()));
-
-        this.enseignantRepository.save(enseignant);
+        classe.getEnseignants().add(enseignant);
+        enseignantRepository.save(enseignant);
         return "Enseignant saved successfully";
     }
 
+    public List<Classe> getClassesByEnseignantId(Long enseignantId) {
+        Enseignant enseignant = enseignantRepository.findById(enseignantId).orElse(null);
+        if (enseignant != null) {
+            return classeRepository.findByEnseignantsContains(enseignant);
+        }
+        return null;
+    }
+
+
+
+    @Override
+    public String register(UserEntity user, String roleName,Matiere matiere) {
+
+        Role role = this.roleRepository.findByRoleName(roleName);
+        user.setRoles(Collections.singletonList(role));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Create an Enseignant if roleName is "enseignant"
+        if (roleName.equalsIgnoreCase("enseignant")) {
+            Enseignant enseignant = new Enseignant();
+            BeanUtils.copyProperties(user, enseignant); // Copy user properties to enseignant
+            // Set additional enseignant properties if needed
+            this.userRepository.save(enseignant);
+        } else if (roleName.equalsIgnoreCase("admin")) {
+            Admin admin = new Admin();
+            BeanUtils.copyProperties(user, admin); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(admin);
+        } else if (roleName.equalsIgnoreCase("eleve")) {
+            Eleve eleve = new Eleve();
+            BeanUtils.copyProperties(user, eleve); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(eleve);
+        } else if (roleName.equalsIgnoreCase("parent")) {
+            Parent parent = new Parent();
+            BeanUtils.copyProperties(user, parent); // Copy user properties to admin
+            // Set additional admin properties if needed
+            this.userRepository.save(parent);
+        } else {
+            // Handle other roles if needed
+            throw new BadRequestException("Unsupported role");
+        }
+
+        return "User saved successfully";
+    }
 
 
     @Override

@@ -22,9 +22,12 @@ public class Evaluation {
     @OneToMany(mappedBy = "evaluation", cascade = CascadeType.ALL)
     private List<Question> questions = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne
     private Classe classe;
 
+
+    @JsonIgnore
     @ManyToOne
     private Enseignant enseignant;
 
