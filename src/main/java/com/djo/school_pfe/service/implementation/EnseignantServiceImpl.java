@@ -9,8 +9,11 @@ import com.djo.school_pfe.repository.UserRepository;
 import com.djo.school_pfe.service.interfaces.EnseignantService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +51,8 @@ public class EnseignantServiceImpl implements EnseignantService {
         enseignantRepository.save(enseignant);
         return "Enseignant saved successfully";
     }
+
+
 
     public List<Classe> getClassesByEnseignantId(Long enseignantId) {
         Enseignant enseignant = enseignantRepository.findById(enseignantId).orElse(null);
