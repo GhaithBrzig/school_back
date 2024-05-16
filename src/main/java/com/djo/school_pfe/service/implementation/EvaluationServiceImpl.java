@@ -83,13 +83,6 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
     }
 
-
-
-
-
-
-
-
     @Override
     public void deleteEvaluation(Long id) {
         evaluationRepository.deleteById(id);
@@ -99,8 +92,4 @@ public class EvaluationServiceImpl implements EvaluationService {
         return evaluationRepository.findByEnseignant_UserId(enseignantId);
     }
 
-    @Override
-    public List<Evaluation> getEvaluationsByClassId(Long classeId) {
-        return evaluationRepository.findByClasses_Id(classeId);
-    }
 }
