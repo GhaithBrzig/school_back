@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,9 +36,16 @@ public class EvaluationResultServiceImpl implements EvaluationResultService {
 
     @Override
     public String add(EvaluationResult evaluationResult) {
+        if (evaluationResult.getEvaluation() != null && evaluationResult.getEvaluation().getDeadline().isBefore(LocalDateTime.now())) {
+            evaluationResult.setExpired(true);
+        } else {
+            evaluationResult.setExpired(false);
+        }
         this.evaluationResultRepository.save(evaluationResult);
         return "EvaluationResult saved successfully";
     }
+
+
 
     @Override
     public EvaluationResult getEvaluationResultById(Long id) {

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -30,6 +31,14 @@ public class EvaluationResult {
     private Evaluation evaluation;
 
     private int score;
+
+
+    private boolean expired;
+
+    // Add equals and hashCode methods for proper entity comparison if needed
+
+    // Additional method to check if the evaluation is expired
+
 
     // Add equals and hashCode methods for proper entity comparison if needed
 }
