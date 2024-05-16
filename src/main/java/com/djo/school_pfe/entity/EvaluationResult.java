@@ -19,16 +19,17 @@ public class EvaluationResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eleve_id")
-    @JsonIgnoreProperties("evaluationResults")
+    @JsonIgnoreProperties({"evaluationResults", "passedEvaluations", "hibernateLazyInitializer", "handler"})
     private Eleve eleve;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "evaluation_id")
+    @JsonIgnoreProperties({"questions", "classes", "hibernateLazyInitializer", "handler"})
     private Evaluation evaluation;
 
     private int score;
 
-    // Getters and setters
+    // Add equals and hashCode methods for proper entity comparison if needed
 }

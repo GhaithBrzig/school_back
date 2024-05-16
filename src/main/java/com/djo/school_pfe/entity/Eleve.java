@@ -26,9 +26,12 @@ public class Eleve extends UserEntity{
     private List<Evaluation> evaluations;
 
     @OneToMany(mappedBy = "eleve")
+    @JsonIgnoreProperties({"eleve", "hibernateLazyInitializer", "handler"})
     private List<EvaluationResult> evaluationResults;
+
     // Getters and setters
     @ManyToMany
+    @JsonIgnoreProperties({"eleve", "hibernateLazyInitializer", "handler"})
     private List<Evaluation> passedEvaluations;
 
 }

@@ -36,10 +36,16 @@ public class EvaluationResultController {
     }
 
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvaluationResult(@PathVariable Long id) {
         evaluationResultService.deleteEvaluationResult(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<EvaluationResult>> getEvaluationResultsByUserId(@PathVariable Long userId) {
+        List<EvaluationResult> evaluationResults = evaluationResultService.getEvaluationResultsByUserId(userId);
+        return ResponseEntity.ok(evaluationResults);
+    }
 }
+
