@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ClasseService {
 
-
+    public void assignEvaluationToClasse(Long classeId, Long evaluationId);
 
     Classe getClasseById(Long id);
     List<Classe> getAllClasses();

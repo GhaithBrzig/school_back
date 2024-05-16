@@ -46,4 +46,10 @@ public class ClasseController {
         classeService.deleteClasse(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{classeId}/evaluations/{evaluationId}")
+    public ResponseEntity<Void> assignEvaluationToClasse(@PathVariable Long classeId, @PathVariable Long evaluationId) {
+        classeService.assignEvaluationToClasse(classeId, evaluationId);
+        return ResponseEntity.ok().build();
+    }
 }
