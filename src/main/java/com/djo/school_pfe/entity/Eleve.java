@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "Eleves")
 public class Eleve extends UserEntity{
 
-    @JsonIgnore
+    @JsonIgnoreProperties({"eleve", "hibernateLazyInitializer", "handler"})
     @ManyToOne
     private Classe classe;
 
