@@ -5,6 +5,8 @@ import com.djo.school_pfe.entity.Eleve;
 import com.djo.school_pfe.entity.Enseignant;
 import com.djo.school_pfe.entity.Matiere;
 import com.djo.school_pfe.error.BadRequestException;
+import com.djo.school_pfe.repository.ClasseRepository;
+import com.djo.school_pfe.repository.EnseignantRepository;
 import com.djo.school_pfe.service.interfaces.ClasseService;
 import com.djo.school_pfe.service.interfaces.EnseignantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,17 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/enseignants")
 public class EnseignantController {
     private final EnseignantService enseignantService;
     private final ClasseService classeService;
+    @Autowired
+    EnseignantRepository enseignantRepository;
+    @Autowired
+    ClasseRepository classeRepository;
 
     @Autowired
     public EnseignantController(EnseignantService enseignantService,ClasseService classeService) {
@@ -66,5 +73,34 @@ public class EnseignantController {
     public ResponseEntity<Void> deleteEnseignant(@PathVariable Long id) {
         enseignantService.deleteEnseignant(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{classeId}/enseignants/{enseignantId}")
+    public ResponseEntity<Classe> addEnseignantToClasse(@PathVariable Long classeId, @PathVariable Long enseignantId) {
+        Optional<Classe> optionalClasse = classeRepository.findById(classeId);
+        if (!optionalClasse.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Enseignant> optionalEnseignant = enseignantRepository.findById(enseignantId);
+        if (!optionalEnseignant.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Classe classe = optionalClasse.get();
+        Enseignant enseignant = optionalEnseignant.get();
+
+        // Check if the enseignant is already associated with the classe
+        if (classe.getEnseignants().contains(enseignant)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Add the enseignant to the classe's list of enseignants
+        classe.getEnseignants().add(enseignant);
+
+        // Save the updated classe to the database
+        classe = classeRepository.save(classe);
+
+        return ResponseEntity.ok(classe);
     }
 }
