@@ -15,5 +15,6 @@ public interface EvaluationService {
     void deleteEvaluation(Long id);
 
     String add(Evaluation evaluation);
+    List<Evaluation> getEvaluationsByClassId(Long classeId);
     List<Evaluation> getEvaluationsByEnseignantId(Long enseignantId);
 }

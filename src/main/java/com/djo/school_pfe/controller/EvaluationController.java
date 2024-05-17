@@ -53,4 +53,13 @@ public class EvaluationController {
         List<Evaluation> evaluations = evaluationService.getEvaluationsByEnseignantId(enseignantId);
         return ResponseEntity.ok(evaluations);
     }
+
+
+    @GetMapping("/classe/{classeId}")
+    public ResponseEntity<List<Evaluation>> getEvaluationByCLasse(@PathVariable Long classeId) {
+        // Assuming you have a service method to get evaluations by enseignant ID
+        List<Evaluation> evaluations = evaluationService.getEvaluationsByClassId(classeId);
+        return ResponseEntity.ok(evaluations);
+    }
+
 }

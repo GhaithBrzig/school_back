@@ -59,15 +59,37 @@ public class ClasseServiceImpl implements ClasseService {
     }
 
     @Override
-    public Classe updateClasse(Long id, Classe classe) {
+    public Classe updateClasse(Long id, Classe updatedClasse) {
         Optional<Classe> optionalClasse = classeRepository.findById(id);
         if (optionalClasse.isPresent()) {
-            classe.setId(id);
-            return classeRepository.save(classe);
+            Classe existingClasse = optionalClasse.get();
+
+            // Update only the non-null fields
+            if (updatedClasse.getNiveau() != null) {
+                existingClasse.setNiveau(updatedClasse.getNiveau());
+            }
+            if (updatedClasse.getNom() != null) {
+                existingClasse.setNom(updatedClasse.getNom());
+            }
+            if (updatedClasse.getNbrEleves() != 0) { // assuming nbrEleves is never meant to be 0 when updated
+                existingClasse.setNbrEleves(updatedClasse.getNbrEleves());
+            }
+            if (updatedClasse.getEvaluations() != null && !updatedClasse.getEvaluations().isEmpty()) {
+                existingClasse.setEvaluations(updatedClasse.getEvaluations());
+            }
+            if (updatedClasse.getEleves() != null && !updatedClasse.getEleves().isEmpty()) {
+                existingClasse.setEleves(updatedClasse.getEleves());
+            }
+            if (updatedClasse.getEnseignants() != null && !updatedClasse.getEnseignants().isEmpty()) {
+                existingClasse.setEnseignants(updatedClasse.getEnseignants());
+            }
+
+            return classeRepository.save(existingClasse);
         } else {
             throw new IllegalArgumentException("Classe with id " + id + " does not exist!");
         }
     }
+
 
     @Override
     public void deleteClasse(Long id) {
