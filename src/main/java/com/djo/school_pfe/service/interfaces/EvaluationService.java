@@ -16,5 +16,4 @@ public interface EvaluationService {
 
     String add(Evaluation evaluation);
     List<Evaluation> getEvaluationsByEnseignantId(Long enseignantId);
-    List<Evaluation> getEvaluationsByClassId(Long classeId);
 }

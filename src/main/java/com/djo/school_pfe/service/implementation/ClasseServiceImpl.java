@@ -1,16 +1,19 @@
 package com.djo.school_pfe.service.implementation;
 
 import com.djo.school_pfe.entity.Classe;
+import com.djo.school_pfe.entity.Evaluation;
 import com.djo.school_pfe.entity.Role;
 import com.djo.school_pfe.entity.Validation;
 import com.djo.school_pfe.error.BadRequestException;
 import com.djo.school_pfe.repository.ClasseRepository;
+import com.djo.school_pfe.repository.EvaluationRepository;
 import com.djo.school_pfe.repository.RoleRepository;
 import com.djo.school_pfe.service.interfaces.ClasseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +21,12 @@ import java.util.Optional;
 @Service
 public class ClasseServiceImpl implements ClasseService {
     private final ClasseRepository classeRepository;
+    private final EvaluationRepository evaluationRepository;
 
     @Autowired
-    public ClasseServiceImpl(ClasseRepository classeRepository) {
+    public ClasseServiceImpl(ClasseRepository classeRepository, EvaluationRepository evaluationRepository) {
         this.classeRepository = classeRepository;
+        this.evaluationRepository = evaluationRepository;
     }
     @Autowired
     Validation validation;
@@ -41,6 +46,16 @@ public class ClasseServiceImpl implements ClasseService {
     @Override
     public List<Classe> getAllClasses() {
         return classeRepository.findAll();
+    }
+
+    @Override
+    public void assignEvaluationToClasse(Long classeId, Long evaluationId) {
+        Classe classe = classeRepository.findById(classeId).orElseThrow(() -> new EntityNotFoundException("Classe not found"));
+        Evaluation evaluation = evaluationRepository.findById(evaluationId).orElseThrow(() -> new EntityNotFoundException("Evaluation not found"));
+
+        classe.addEvaluation(evaluation);
+
+        classeRepository.save(classe);
     }
 
     @Override

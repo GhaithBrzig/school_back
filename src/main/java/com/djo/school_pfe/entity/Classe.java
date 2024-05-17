@@ -44,4 +44,9 @@ public class Classe {
             inverseJoinColumns = @JoinColumn(name = "evaluation_id")
     )
     private List<Evaluation> evaluations = new ArrayList<>();
+
+    public void addEvaluation(Evaluation evaluation) {
+        this.evaluations.add(evaluation);
+        evaluation.getClasses().add(this);
+    }
 }
