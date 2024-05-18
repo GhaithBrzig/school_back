@@ -83,7 +83,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             BeanUtils.copyProperties(user, parent); // Copy user properties to admin
             // Set additional admin properties if needed
             this.userRepository.save(parent);
-        } else {
+        }
+        else if (roleName.equalsIgnoreCase("comptable")) {
+            Comptable comptable= new Comptable();
+            BeanUtils.copyProperties(user, comptable);
+            this.userRepository.save(comptable);
+        }
+
+        else {
             // Handle other roles if needed
             throw new BadRequestException("Unsupported role");
         }

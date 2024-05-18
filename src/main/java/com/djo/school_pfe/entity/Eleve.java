@@ -20,6 +20,7 @@ public class Eleve extends UserEntity{
     private Classe classe;
 
     @ManyToMany
+    @JsonIgnoreProperties({"eleve", "hibernateLazyInitializer", "handler"})
     private List<Parent> parents;
 
     @ManyToMany

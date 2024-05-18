@@ -1,4 +1,5 @@
 package com.djo.school_pfe.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 
@@ -12,6 +13,14 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "Parents")
 public class Parent extends UserEntity{
-    @ManyToMany(mappedBy = "parents")
+
+    @Lob
+    @Column(name="photo",length = 1000000)
+    private byte[] photo;
+
+
+    @ManyToMany(mappedBy = "parents", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"parents", "hibernateLazyInitializer", "handler"})
     private List<Eleve> enfants;
+
 }
