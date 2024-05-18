@@ -14,5 +14,7 @@ public interface ComptableService {
     List<Comptable> getAllComptables();
     void deleteComptable(Long id);
     String add(Comptable comptable, String roleName);
+
+    public void updateParentPhotoState(Long parentId, Long comptableId, PhotoState photoState);
 }
 

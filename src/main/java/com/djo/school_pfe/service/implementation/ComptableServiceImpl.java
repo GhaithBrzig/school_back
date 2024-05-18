@@ -1,14 +1,12 @@
 package com.djo.school_pfe.service.implementation;
 import com.djo.school_pfe.entity.*;
-import com.djo.school_pfe.repository.ComptableRepository;
+import com.djo.school_pfe.repository.*;
 import com.djo.school_pfe.service.interfaces.ComptableService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.djo.school_pfe.error.BadRequestException;
-import com.djo.school_pfe.repository.EleveRepository;
-import com.djo.school_pfe.repository.RoleRepository;
-import com.djo.school_pfe.repository.UserRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +32,8 @@ public class ComptableServiceImpl implements ComptableService {
     UserRepository userRepository;
     @Autowired
     ComptableRepository comptableRepository;
+    @Autowired
+    ParentRepository parentRepository;
 
 
 
@@ -82,6 +82,21 @@ public class ComptableServiceImpl implements ComptableService {
         return "User saved successfully";
     }
 
+
+    @Override
+    public void updateParentPhotoState(Long parentId, Long comptableId, PhotoState photoState) {
+        // Check if the comptable exists
+        Comptable comptable = comptableRepository.findById(comptableId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comptable not found"));
+
+        // Check if the parent exists
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Parent not found"));
+
+        // Update the parent's photo state
+        parent.setPhotoState(photoState);
+        parentRepository.save(parent);
+    }
 
     @Override
     public Comptable getComptableById(Long id) {

@@ -1,6 +1,7 @@
 package com.djo.school_pfe.service.interfaces;
 
 import com.djo.school_pfe.entity.Parent;
+import com.djo.school_pfe.entity.PhotoState;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,4 +19,5 @@ public interface ParentService {
     String add(Parent parent, String roleName);
 
     public void uploadPhoto(Long parentId, MultipartFile file) throws IOException;
+
 }

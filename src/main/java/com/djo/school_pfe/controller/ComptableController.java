@@ -2,6 +2,7 @@ package com.djo.school_pfe.controller;
 
 import com.djo.school_pfe.entity.Comptable;
 import com.djo.school_pfe.entity.Parent;
+import com.djo.school_pfe.entity.PhotoState;
 import com.djo.school_pfe.service.interfaces.ComptableService;
 import com.djo.school_pfe.service.interfaces.ParentService;
 import org.springframework.http.ResponseEntity;
@@ -34,4 +35,15 @@ public class ComptableController {
         List<Comptable> comptables = comptableService.getAllComptables();
         return ResponseEntity.ok(comptables);
     }
+
+    @PutMapping("/{comptableId}/parents/{parentId}/photo-state")
+    public ResponseEntity<Void> updateParentPhotoState(
+            @PathVariable Long comptableId,
+            @PathVariable Long parentId,
+            @RequestParam PhotoState photoState) {
+
+        comptableService.updateParentPhotoState(parentId, comptableId, photoState);
+        return ResponseEntity.noContent().build();
+    }
+
 }

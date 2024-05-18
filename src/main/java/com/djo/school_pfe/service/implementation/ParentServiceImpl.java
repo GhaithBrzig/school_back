@@ -1,9 +1,6 @@
 package com.djo.school_pfe.service.implementation;
 
-import com.djo.school_pfe.entity.Eleve;
-import com.djo.school_pfe.entity.Parent;
-import com.djo.school_pfe.entity.Role;
-import com.djo.school_pfe.entity.Validation;
+import com.djo.school_pfe.entity.*;
 import com.djo.school_pfe.error.BadRequestException;
 import com.djo.school_pfe.repository.EleveRepository;
 import com.djo.school_pfe.repository.ParentRepository;
@@ -72,6 +69,7 @@ public class ParentServiceImpl implements ParentService {
             throw new BadRequestException("Parent is already assigned to the eleve");
         }
     };
+
     @Override
     public void uploadPhoto(Long parentId, MultipartFile file) throws IOException {
         Parent parent = parentRepository.findById(parentId)
@@ -79,6 +77,7 @@ public class ParentServiceImpl implements ParentService {
 
         byte[] bytes = file.getBytes();
         parent.setPhoto(bytes);
+        parent.setPhotoState(PhotoState.PAS_TRAITER);
 
         parentRepository.save(parent);
     }

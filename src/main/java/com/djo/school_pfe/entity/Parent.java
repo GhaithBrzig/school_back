@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Parents")
 public class Parent extends UserEntity{
@@ -19,8 +18,25 @@ public class Parent extends UserEntity{
     private byte[] photo;
 
 
-    @ManyToMany(mappedBy = "parents", cascade = CascadeType.ALL)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "photo_state")
+    private PhotoState photoState;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "parent_eleve",
+            joinColumns = @JoinColumn(name = "parent_id"),
+            inverseJoinColumns = @JoinColumn(name = "eleve_id")
+    )
     @JsonIgnoreProperties({"parents", "hibernateLazyInitializer", "handler"})
     private List<Eleve> enfants;
+
+    public Parent(byte[] photo, PhotoState photoState, List<Eleve> enfants) {
+        super();
+        this.photo = photo;
+        this.photoState = photoState;
+        this.enfants = enfants;
+    }
 
 }
