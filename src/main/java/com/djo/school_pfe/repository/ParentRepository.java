@@ -14,4 +14,5 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
     Optional<Eleve> findByUserName(String userName);
 
     Optional<Eleve> findByEmailAddress(String emailAddress);
+
 }
