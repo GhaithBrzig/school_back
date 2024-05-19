@@ -84,10 +84,9 @@ public class ComptableServiceImpl implements ComptableService {
 
 
     @Override
-    public void updateParentPhotoState(Long parentId, Long comptableId, PhotoState photoState) {
+    public void updateParentPhotoState(Long parentId, PhotoState photoState) {
         // Check if the comptable exists
-        Comptable comptable = comptableRepository.findById(comptableId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comptable not found"));
+
 
         // Check if the parent exists
         Parent parent = parentRepository.findById(parentId)

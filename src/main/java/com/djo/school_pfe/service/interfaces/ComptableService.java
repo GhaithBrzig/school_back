@@ -15,6 +15,6 @@ public interface ComptableService {
     void deleteComptable(Long id);
     String add(Comptable comptable, String roleName);
 
-    public void updateParentPhotoState(Long parentId, Long comptableId, PhotoState photoState);
+    public void updateParentPhotoState(Long parentId, PhotoState photoState);
 }
 

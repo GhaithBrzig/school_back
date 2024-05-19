@@ -36,13 +36,12 @@ public class ComptableController {
         return ResponseEntity.ok(comptables);
     }
 
-    @PutMapping("/{comptableId}/parents/{parentId}/photo-state")
+    @PutMapping("/parents/{parentId}/photo-state")
     public ResponseEntity<Void> updateParentPhotoState(
-            @PathVariable Long comptableId,
             @PathVariable Long parentId,
             @RequestParam PhotoState photoState) {
 
-        comptableService.updateParentPhotoState(parentId, comptableId, photoState);
+        comptableService.updateParentPhotoState(parentId, photoState);
         return ResponseEntity.noContent().build();
     }
 

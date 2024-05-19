@@ -22,7 +22,7 @@ public class EvaluationResult {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "eleve_id")
-    @JsonIgnoreProperties({"evaluationResults", "passedEvaluations", "hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"evaluationResults", "passedEvaluations","parents", "hibernateLazyInitializer", "handler"})
     private Eleve eleve;
 
     @ManyToOne(fetch = FetchType.LAZY)
