@@ -75,13 +75,16 @@ public class EvaluationServiceImpl implements EvaluationService {
             }
 
             // Update the evaluation's details
-            existingEvaluation.setNom(evaluation.getNom()); // Update other attributes if needed
+            existingEvaluation.setNom(evaluation.getNom()); // Update name
+            existingEvaluation.setDeadline(evaluation.getDeadline()); // Update deadline
+            existingEvaluation.setDuration(evaluation.getDuration()); // Update duration if needed
 
             return evaluationRepository.save(existingEvaluation);
         } else {
             throw new IllegalArgumentException("Evaluation with id " + id + " does not exist!");
         }
     }
+
 
     @Override
     public void deleteEvaluation(Long id) {
